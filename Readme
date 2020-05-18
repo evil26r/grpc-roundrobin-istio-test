@@ -18,7 +18,7 @@ curl http://localhost:8080/rpc
 curl http://localhost:8080/stream
 
 Configs:
-Для модуля Client: grpc.target.address (адрес сервера grpc | grpc.target.address=localhost:50051 или grpc.target.address=${service.name}:50052)
+Для модуля Client: grpc.target.address (адрес сервера grpc | grpc.target.address=localhost:50051 или grpc.target.address=${service.name}:50051)
                    server.port(rest port | не обязательно, по умолчанию 8080)
 
 Для модуля Server: grpc.server.service.port (порт сервера grpc | grpc.server.service.port=50051)
