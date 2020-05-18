@@ -1,0 +1,26 @@
+Проект служит для проверки работы RoundRobin в Service Mesh.
+
+Общее взаимодействие:
+
+                      |
+Rest -> CLIENT --grpc | OpenShift--> SERVER --grpc--> ENDPOINT
+                      |
+
+
+Пользователь делает http запрос на модуль клиента при этом он в не кластера,
+клиент по grpc стучится на модуль server, который в свою очередь идет на модуль endpoint.
+
+
+Пример единичного запроса:
+curl http://localhost:8080/rpc
+Пример стрим запроса:
+curl http://localhost:8080/stream
+
+Configs:
+Для модуля Client: grpc.target.address (адрес сервера grpc | grpc.target.address=localhost:50051 или grpc.target.address=${service.name}:50052)
+                   server.port(rest port | не обязательно, по умолчанию 8080)
+
+Для модуля Server: grpc.server.service.port (порт сервера grpc | grpc.server.service.port=50051)
+                   grpc.target.address (адрес сервера grpc |  grpc.target.address=localhost:50052 или grpc.target.address=service.name:50052)
+
+Для модуля Endpoint: grpc.server.service.port (порт сервера grpc | grpc.server.service.port=50052)

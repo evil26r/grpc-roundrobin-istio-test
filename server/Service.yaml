@@ -1,0 +1,20 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: grpc-server
+  namespace: test-project
+  labels:
+    app: grpc-server
+spec:
+  ports:
+    - name: grpc-srv
+      protocol: TCP
+      port: 50051
+      targetPort: 50051
+  selector:
+    app: grpc-server
+  clusterIP: 172.30.160.199
+  type: ClusterIP
+  sessionAffinity: None
+status:
+  loadBalancer: {}

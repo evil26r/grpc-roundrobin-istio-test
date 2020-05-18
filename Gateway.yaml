@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  creationTimestamp: '2020-05-18T10:59:35Z'
+  generation: 1
+  name: istio-ingressgateway-grpc
+  namespace: test-project
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - '*'
+      port:
+        name: grpc
+        number: 80
+        protocol: GRPC

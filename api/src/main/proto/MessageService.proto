@@ -1,0 +1,13 @@
+syntax = "proto3";
+package com.grpc_http2_test.grpc;
+
+message Payload {
+  string payload = 1;
+  int32 count = 2;
+}
+
+service Message {
+  rpc send(Payload) returns (Payload);
+
+  rpc sendStream(stream Payload) returns (stream Payload);
+}

@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  generation: 1
+  name: grpc-server
+  namespace: test-project
+spec:
+  gateways:
+    - istio-ingressgateway-grpc
+  hosts:
+    - '*'
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: grpc-server
+            port:
+              number: 50051

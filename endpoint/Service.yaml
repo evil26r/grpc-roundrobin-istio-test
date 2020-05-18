@@ -1,0 +1,20 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: grpc-endpoint
+  namespace: test-project
+  labels:
+    app: grpc-endpoint
+spec:
+  ports:
+    - name: grpc-endp
+      protocol: TCP
+      port: 50051
+      targetPort: 50051
+  selector:
+    app: grpc-endpoint
+  clusterIP: 172.30.23.106
+  type: ClusterIP
+  sessionAffinity: None
+status:
+  loadBalancer: {}
