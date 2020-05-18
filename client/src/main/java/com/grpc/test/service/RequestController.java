@@ -14,20 +14,12 @@ public class RequestController {
 
     @GetMapping("rpc")
     public Mono<String> rpc(@RequestParam(name = "payload", defaultValue = "very important payload") String payload) {
-        try {
-            return Mono.just(clientMessageService.sendMessage(payload));
-        } catch (Exception ex) {
-            return Mono.just(ex.getMessage());
-        }
+        return Mono.just(clientMessageService.sendMessage(payload));
     }
 
     @GetMapping("stream")
     public Mono<String> stream(@RequestParam(name = "payload", defaultValue = "very important payload") String payload,
                                @RequestParam(name = "count", defaultValue = "1") int count) {
-        try {
-            return Mono.just(clientMessageService.sendMessageToStream(payload, count));
-        } catch (Exception ex) {
-            return Mono.just(ex.getMessage());
-        }
+        return Mono.just(clientMessageService.sendMessageToStream(payload, count));
     }
 }
