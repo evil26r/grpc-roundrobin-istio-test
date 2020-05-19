@@ -49,7 +49,6 @@ public class ClientMessageService {
                 log.info("Stream is complete");
             }
         });
-
         return IntStream.range(0, count)
                 .mapToObj(operand -> prepareRequest(payload, count))
                 .peek(requestObserver::onNext)
@@ -61,7 +60,7 @@ public class ClientMessageService {
                         return e.getMessage();
                     }
                 })
-                .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining());
     }
 
     private static MessageService.Payload prepareRequest(String payload, int count) {
