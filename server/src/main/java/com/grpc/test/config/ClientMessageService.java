@@ -5,18 +5,15 @@ import com.grpc_http2_test.grpc.MessageGrpc;
 import com.grpc_http2_test.grpc.MessageService;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -28,6 +25,7 @@ public class ClientMessageService {
     private final MessageGrpc.MessageStub messageStub;
 
     private final BlockingQueue<String> queue = new LinkedBlockingQueue<>();
+    AtomicInteger atomicInteger = new AtomicInteger(0);
 
     public String sendMessage(String payload) {
         log.info("Will try to send message with payload: [{}].", payload);
@@ -38,16 +36,18 @@ public class ClientMessageService {
     public String sendMessageToStream(String payload, int count) {
         log.info("Will try to send message with payload: [{}].", payload);
         StreamObserver<MessageService.Payload> requestObserver = messageStub.sendStream(new StreamObserver<>() {
+            @SneakyThrows
             @Override
             public void onNext(MessageService.Payload value) {
                 log.debug("Get request: [{}]", value.getPayload());
-                queue.add(value.getPayload());
+                queue.put(value.getPayload());
             }
 
+            @SneakyThrows
             @Override
             public void onError(Throwable t) {
                 log.debug("Get throwable: [{}]", t.getMessage());
-                queue.add(t.getMessage());
+                queue.put(t.getMessage());
             }
 
             @Override
@@ -59,13 +59,16 @@ public class ClientMessageService {
         return IntStream.range(0, count)
                 .mapToObj(operand -> prepareRequest(payload, count))
                 .peek(requestObserver::onNext)
-                .map($payload -> {
-                    try {
-                        return queue.take() + " ";
-                    } catch (InterruptedException e) {
-                        return e.getMessage();
-                    }
-                })
+                .flatMap($payload ->
+                    IntStream.range(0, count)
+                            .mapToObj(value -> {
+                                try {
+                                    return queue.poll(1, TimeUnit.SECONDS);
+                                } catch (InterruptedException e) {
+                                    return null;
+                                }
+                            })
+                )
                 .collect(Collectors.joining());
     }
 
