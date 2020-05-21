@@ -17,6 +17,9 @@ curl http://localhost:8080/rpc
 Пример стрим запроса:
 curl http://localhost:8080/stream
 
+Можно указать кол-во исходящих запросов с помощью параметра count (curl http://localhost:8080/rpc?count=3)
+
+
 Configs:
 Для модуля Client: grpc.target.address (адрес сервера grpc | grpc.target.address=localhost:50051 или grpc.target.address=${service.name}:50051)
                    server.port(rest port | не обязательно, по умолчанию 8080)
@@ -25,3 +28,16 @@ Configs:
                    grpc.target.address (адрес сервера grpc |  grpc.target.address=localhost:50052 или grpc.target.address=service.name:50052)
 
 Для модуля Endpoint: grpc.server.service.port (порт сервера grpc | grpc.server.service.port=50052)
+
+Для запуска в OpenShift Istio необходимо применить следующие файлы:
+
+./endpoint/ConfigMap.yaml
+./endpoint/Deployment.yaml
+./endpoint/Service.yaml
+./endpoint/VirtualService.yaml
+./server/ConfigMap.yaml
+./server/Deployment.yaml
+./server/Service.yaml
+./server/VirtualService.yaml
+./Gateway.yaml
+./Ingressgateway.yaml

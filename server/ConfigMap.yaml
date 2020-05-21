@@ -1,0 +1,8 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: grpc-server-config
+  namespace: test-project
+data:
+  grpc.server.port: '50051'
+  grpc.target.address: 'grpc-endpoint:50051'

@@ -22,4 +22,4 @@ spec:
             - containerPort: 50051
           envFrom:
             - configMapRef:
-                name: grpc-server-config
+                name: grpc-endpoint-config
