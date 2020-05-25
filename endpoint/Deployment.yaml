@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: grpc-server
+  name: grpc-endpoint
   namespace: test-project
 spec:
   selector:
     matchLabels:
-      app: grpc-server
+      app: grpc-endpoint
   replicas: 1
   template:
     metadata:
       annotations:
         sidecar.istio.io/inject: "true"
       labels:
-        app: grpc-server
+        app: grpc-endpoint
     spec:
       containers:
         - name: grpc-client
-          image: evil26r/grpc-server-test
+          image: evil26r/grpc-endpoint-test
           ports:
             - containerPort: 50051
           envFrom:
