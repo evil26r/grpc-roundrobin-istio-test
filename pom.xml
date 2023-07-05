@@ -19,7 +19,7 @@
     <properties>
         <maven.compiler.source>14</maven.compiler.source>
         <maven.compiler.target>14</maven.compiler.target>
-        <grpc.version>1.29.0</grpc.version>
+        <grpc.version>1.53.0</grpc.version>
         <os.plugin.version>1.6.2</os.plugin.version>
         <protobuf.plugin.version>0.6.1</protobuf.plugin.version>
         <protoc.version>3.11.4</protoc.version>
